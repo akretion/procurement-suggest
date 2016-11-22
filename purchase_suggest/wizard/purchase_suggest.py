@@ -2,10 +2,10 @@
 # © 2015-2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import models, fields, api, _
-import openerp.addons.decimal_precision as dp
-from openerp.tools import float_compare, float_is_zero
-from openerp.exceptions import UserError
+from odoo import models, fields, api, _
+import odoo.addons.decimal_precision as dp
+from odoo.tools import float_compare, float_is_zero
+from odoo.exceptions import UserError
 import logging
 
 logger = logging.getLogger(__name__)
@@ -78,6 +78,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
         ppo = self.env['product.product']
         swoo = self.env['stock.warehouse.orderpoint']
         products = {}
+        products_rec = ppo
         op_domain = [
             ('suggest', '=', True),
             ('company_id', '=', self.env.user.company_id.id),
@@ -97,6 +98,7 @@ class PurchaseSuggestGenerate(models.TransientModel):
                     'orderpoint': op,
                     'product': op.product_id
                     }
+                products_rec += op.product_id
             else:
                 raise UserError(
                     _("There are 2 orderpoints (%s and %s) for the same "
@@ -105,16 +107,15 @@ class PurchaseSuggestGenerate(models.TransientModel):
                         products[op.product_id.id]['orderpoint'].name,
                         op.name,
                         self.location_id.complete_name))
-        return products
+        return products, products_rec
 
     @api.multi
     def run(self):
         self.ensure_one()
         pso = self.env['purchase.suggest']
         polo = self.env['purchase.order.line']
-        puo = self.env['product.uom']
         p_suggest_lines = []
-        products = self.generate_products_dict()
+        (products, products_rec) = self.generate_products_dict()
         # key = product_id
         # value = {'virtual_qty': 1.0, 'draft_po_qty': 4.0, 'min_qty': 6.0}
         # WARNING: draft_po_qty is in the UoM of the product
@@ -123,13 +124,13 @@ class PurchaseSuggestGenerate(models.TransientModel):
         polines = polo.search([
             ('state', '=', 'draft'), ('product_id', 'in', products.keys())])
         for line in polines:
-            qty_product_po_uom = puo._compute_qty_obj(
-                line.product_uom, line.product_qty, line.product_id.uom_id)
+            qty_product_po_uom = line.product_uom._compute_quantity(
+                line.product_qty, line.product_id.uom_id)
             products[line.product_id.id]['draft_po_qty'] += qty_product_po_uom
         logger.info('Draft PO qty computed on %d products', len(products))
-        virtual_qties = self.pool['product.product']._product_available(
-            self._cr, self._uid, products.keys(),
-            context={'location': self.location_id.id})
+        virtual_qties = products_rec.with_context(
+            location=self.location_id.id)._compute_quantities_dict(
+                False, False, False)
         logger.info('Stock levels qty computed on %d products', len(products))
         for product_id, qty_dict in products.iteritems():
             qty_dict['virtual_available'] =\
@@ -293,7 +294,6 @@ class PurchaseSuggestPoCreate(models.TransientModel):
             self, partner, company, po_lines, location):
         polo = self.env['purchase.order.line']
         poo = self.env['purchase.order']
-        puo = self.env['product.uom']
         pick_type = self._location2pickingtype(company, location)
         existing_pos = poo.search([
             ('partner_id', '=', partner.id),
@@ -311,8 +311,8 @@ class PurchaseSuggestPoCreate(models.TransientModel):
                     ])
                 if existing_polines:
                     existing_poline = existing_polines[0]
-                    existing_poline.product_qty += puo._compute_qty_obj(
-                        uom, qty_to_order, existing_poline.product_uom)
+                    existing_poline.product_qty += uom._compute_quantity(
+                        qty_to_order, existing_poline.product_uom)
                     existing_poline._onchange_quantity()
                 else:
                     pol_vals = self._prepare_purchase_order_line(

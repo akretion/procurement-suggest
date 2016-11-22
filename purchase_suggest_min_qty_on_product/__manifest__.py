@@ -4,7 +4,7 @@
 
 {
     'name': 'Purchase Suggest Min Qty on Product',
-    'version': '9.0.1.0.0.1',
+    'version': '10.0.1.0.0',
     'category': 'Purchase',
     'license': 'AGPL-3',
     'summary': 'Replace orderpoints by a min_qty field on product',
@@ -23,5 +23,5 @@ This module has been written by Alexis de Lattre from Akretion <alexis.delattre@
         'product_view.xml',
         'wizard/purchase_suggest_view.xml',
         ],
-    'installable': True,
+    'installable': False,
 }

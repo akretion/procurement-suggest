@@ -5,7 +5,7 @@
 -->
 
 <odoo>
-<data>
+
 
 <record id="purchase_suggest_generate_form" model="ir.ui.view">
     <field name="name">purchase_suggest_generate.form</field>
@@ -121,5 +121,4 @@
             target="new" />
 
 
-</data>
 </odoo>
