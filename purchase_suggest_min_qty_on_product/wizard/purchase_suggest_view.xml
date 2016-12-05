@@ -5,7 +5,6 @@
 -->
 
 <odoo>
-<data>
 
 <record id="purchase_suggest_generate_form" model="ir.ui.view">
     <field name="name">purchase_suggest_min_qty_on_product.generate.form</field>
@@ -21,5 +20,4 @@
     </field>
 </record>
 
-</data>
 </odoo>

@@ -2,7 +2,7 @@
 # © 2015-2016 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 
 
 class PurchaseSuggestionGenerate(models.TransientModel):
@@ -30,6 +30,7 @@ class PurchaseSuggestionGenerate(models.TransientModel):
         product.product'''
         ppo = self.env['product.product']
         products = {}
+        products_rec = ppo
         product_domain = self._prepare_product_domain()
         if self.product_type == 'product':
             product_domain.append(('type', '=', 'product'))
@@ -44,4 +45,5 @@ class PurchaseSuggestionGenerate(models.TransientModel):
                 'orderpoint': False,
                 'product': product,
                 }
-        return products
+            products_rec += product
+        return products, products_rec
