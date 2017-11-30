@@ -203,7 +203,12 @@ class ProcurementSuggest(models.TransientModel):
     draft_qty = fields.Float(
         string='Draft PO/MO', readonly=True,
         digits=dp.get_precision('Product Unit of Measure'),
-        help="TODO")
+        help="Draft purchase orders and manufacturing orders. "
+        "It is computed from the quantity on procurements "
+        "which are not in done nor cancel state. It doesn't "
+        "take into account the purchase orders and manufacturing "
+        "orders that have been created manually (i.e. not created by "
+        "a procurement).")
     orderpoint_id = fields.Many2one(
         'stock.warehouse.orderpoint', string='Re-ordering Rule',
         readonly=True)
