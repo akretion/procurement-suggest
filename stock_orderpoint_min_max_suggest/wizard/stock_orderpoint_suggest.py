@@ -247,12 +247,12 @@ class StockOrderpointSuggest(models.TransientModel):
         string='Location', readonly=True)
     current_min_qty = fields.Float(
         related='orderpoint_id.product_min_qty',
-        string='Min Qty', readonly=True,
+        string='Current Min Qty', readonly=True,
         digits=dp.get_precision('Product Unit of Measure'),
         help="in the unit of measure for the product")
     current_max_qty = fields.Float(
         related='orderpoint_id.product_max_qty',
-        string="Max Qty", readonly=True,
+        string="Current Max Qty", readonly=True,
         digits=dp.get_precision('Product Unit of Measure'),
         help="in the unit of measure for the product")
     min_days = fields.Integer(readonly=True)
