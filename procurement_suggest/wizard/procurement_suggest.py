@@ -27,7 +27,6 @@ class ProcurementSuggestGenerate(models.TransientModel):
         'stock.location', string='Stock Location', required=True,
         default=lambda self: self.env.ref('stock.stock_location_stock'))
 
-    @api.model
     def _prepare_suggest_line(self, product_id, qty_dict):
         future_qty = qty_dict['virtual_available'] + qty_dict['draft_qty']
         if float_compare(
@@ -57,7 +56,6 @@ class ProcurementSuggestGenerate(models.TransientModel):
             }
         return sline
 
-    @api.model
     def _prepare_product_domain(self):
         product_domain = []
         if self.categ_ids:
@@ -71,7 +69,6 @@ class ProcurementSuggestGenerate(models.TransientModel):
                 ('route_ids', 'in', self.route_ids.ids))
         return product_domain
 
-    @api.model
     def generate_products_dict(self):
         ppo = self.env['product.product']
         swoo = self.env['stock.warehouse.orderpoint']

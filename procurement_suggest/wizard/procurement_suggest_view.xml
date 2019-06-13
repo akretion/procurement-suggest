@@ -47,11 +47,11 @@
     parent="stock.menu_stock_inventory_control"
     sequence="11"/>
 
-<record id="purchase_suggest_tree" model="ir.ui.view">
-    <field name="name">purchase_suggest.tree</field>
+<record id="procurement_suggest_tree" model="ir.ui.view">
+    <field name="name">procurement_suggest.tree</field>
     <field name="model">procurement.suggest</field>
     <field name="arch" type="xml">
-        <tree string="Purchase Suggestions" editable="bottom">
+        <tree string="Procurement Suggestions" editable="bottom">
             <field name="seller_id"/>
             <field name="product_id"/>
             <field name="qty_available"/>
@@ -70,7 +70,7 @@
     <field name="name">procurement_suggest.search</field>
     <field name="model">procurement.suggest</field>
     <field name="arch" type="xml">
-        <search string="Purchase Suggestions">
+        <search string="Procurement Suggestions">
             <field name="seller_id"/>
             <field name="product_id"/>
             <group string="Group By" name="groupby">
