@@ -40,7 +40,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
     security_days = fields.Integer(
         string='Additional Security Rotation Duration')
     min2max_ratio = fields.Integer(
-        string='Min to Max Ratio',
+        string='Min to Max Rotation Duration Ratio',
         help="If you enter 20, the suggested max quantity will be the "
         "suggested min quantity + 20 %")
     suggest_from = fields.Selection([
@@ -48,7 +48,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
         ('avg', 'Average Rotation'),
         ], default='last', string='Suggest From', required=True)
     rotation_average_multiplier = fields.Float(
-        string='Average Rotation Delay Multiplier',
+        string='Average Rotation Duration Multiplier',
         default=2, required=True)
 
     _sql_constraints = [
@@ -255,8 +255,8 @@ class StockOrderpointSuggest(models.TransientModel):
         string="Current Max Qty", readonly=True,
         digits=dp.get_precision('Product Unit of Measure'),
         help="in the unit of measure for the product")
-    min_days = fields.Integer(readonly=True)
-    max_days = fields.Integer(readonly=True)
+    min_days = fields.Integer(string='Min Days', readonly=True)
+    max_days = fields.Integer(string='Max Days', readonly=True)
     last_min_rotation_qty = fields.Float(readonly=True)
     last_max_rotation_qty = fields.Float(readonly=True)
     avg_min_rotation_qty = fields.Float(readonly=True)

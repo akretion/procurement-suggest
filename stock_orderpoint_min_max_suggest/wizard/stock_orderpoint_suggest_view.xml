@@ -13,15 +13,22 @@
     <field name="model">stock.orderpoint.suggest.generate</field>
     <field name="arch" type="xml">
         <form string="Generate Reordering Rules Update Suggestions">
-            <p>This wizard will generate suggestions for new min/max values for existing reordering rules based on the following rules:</p>
-            <ol>
-                <li>it will search all existing reordering rules linked to the selected stock location, limited to the product categories, suppliers and routes if some were selected</li>
-                <li>TODO</li>
-            </ol>
+            <p>This wizard will suggest new min/max quantities on <b>existing</b> reordering rules.</p>
+            <p>Odoo will search all existing reordering rules linked to the selected <i>Stock Location</i>, limited to the selected <i>Product Categories</i>, <i>Routes</i> and <i>Suppliers</i> (if some were selected).</p>
+            <div attrs="{'invisible': [('rotation_duration_source', '!=', 'wizard')]}"><p>If you select <i>Wizard</i> as <i>Rotation Duration Source</i>, you will have to enter below a global <i>Minimum</i> and <i>Maximum Rotation Duration</i>. When you validate this step, Odoo will sum the quantity of the  stock moves in <i>Done</i> state that go from the selected <i>Stock Location</i> to any other stock location (minus the stock moves in <i>Done</i> state that go from any <i>Customer Location</i> to the selected <i>Stock Location</i>) from yesterday to yesterday minus the <i>Minimum Rotation Duration</i>. If you set <i>Suggest From</i> to <i>Last Rotation</i>, that quantity will be used as the new suggested minimum quantity. If you set the <i>Average Rotation Duration Multiplier</i> to 3, Odoo will sum the quantity of the stock moves from yesterday to the triple of the <i>Minimum Rotation Duration</i> and divide the result by 3. If you set <i>Suggest From</i> to <i>Average Rotation</i>, that quantity will be used as the new suggested minimum quantity.</p></div>
 
-            <p>The reordering rules suggestion lines display as much information as possible to help you take the decision on the new min/max quantity. When you have decided the new min/max quantity, enter that value in the last columns.</p>
+            <div attrs="{'invisible': [('rotation_duration_source', '!=', 'orderpoint_supplierinfo')]}"><p>If you select <i>Reordering Rule and Supplierinfo</i> as <i>Rotation Duration Source</i>, Odoo will compute the <i>Minimum Rotation Duration</i> for each orderpoint using:</p>
+                <ul>
+                    <li>the <i>Lead Time</i> of the related orderpoint,</li>
+                    <li>if the lead time of the related orderpoint is set to <i>Day(s) to purchase</i> (and not <i>Day(s) to get the products</i>), it will add the <i>Delivery Lead Time</i> of the supplierinfo (using the first supplierinfo which is currently valid),</li>
+                    <li>it will add the <i>Additional Security Rotation Duration</i> defined below.</li></ul>
+                <p>To compute the <i>Maximum Rotation Duration</i> for each orderpoint, Odoo will multiply the computed <i>Minimum Rotation Duration</i> by the <i>Min to Max Rotation Duration Ratio</i> that you have set below.
+        </p></div>
 
-            <p>Eventually, select the reordering rules that you would like to update and click on <i>Action</i> > <i>Update Selected Reordering Rules</i>.</p>
+            <p>On the next step, Odoo will display, for each reordering rule, the current min/max quantity, the min/max rotation duration, the computed min/max rotation quantity (last and average) and the suggested new min/max quantity. You can manually modify the <i>New Min Qty</i> and the <i>New Max Qty</i>.</p>
+
+            <p>Eventually, select the reordering rules that you would like to update and click on <i>Action</i> > <i>Update Selected Reordering Rules</i>: Odoo will write the new min/max quantity on the selected reordering rules.</p>
+
             <group name="name">
                 <field name="categ_ids" widget="many2many_tags"/>
                 <field name="route_ids" widget="many2many_tags"/>
