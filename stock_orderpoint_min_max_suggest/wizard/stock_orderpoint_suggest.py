@@ -18,7 +18,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
 
     categ_ids = fields.Many2many(
         'product.category', string='Product Categories')
-    seller_ids = fields.Many2many(
+    supplier_ids = fields.Many2many(
         'res.partner', string='Suppliers',
         domain=[('supplier', '=', True)])
     route_ids = fields.Many2many(
@@ -90,7 +90,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
 
     def _prepare_suggest_line(self, orderpoint, return_locations):
         product = orderpoint.product_id
-        seller = product._select_seller()
+        seller = product._select_seller(quantity=100000)
         company = orderpoint.company_id
         smo = self.env['stock.move']
         if self.rotation_duration_source == 'wizard':
@@ -108,7 +108,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
             'company_id': company.id,
             'orderpoint_id': orderpoint.id,
             'product_id': product.id,
-            'seller_id': seller and seller.name.id or False,
+            'supplier_id': seller and seller.name.id or False,
             'min_days': min_days,
             'max_days': max_days,
             }
@@ -168,9 +168,9 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
         if self.categ_ids:
             product_domain.append(
                 ('categ_id', 'child_of', self.categ_ids.ids))
-        if self.seller_ids:
+        if self.supplier_ids:
             product_domain.append(
-                ('seller_id', 'in', self.seller_ids.ids))
+                ('seller_ids.name', 'in', self.supplier_ids.ids))
         if self.route_ids:
             product_domain.append(
                 ('route_ids', 'in', self.route_ids.ids))
@@ -209,7 +209,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
             if vals:
                 o_suggest_lines.append(vals)
         o_suggest_lines_sorted = sorted(
-            o_suggest_lines, key=lambda to_sort: to_sort['seller_id'])
+            o_suggest_lines, key=lambda to_sort: to_sort['supplier_id'])
         o_suggest_ids = []
         for o_suggest_line in o_suggest_lines_sorted:
             o_suggest = soso.create(o_suggest_line)
@@ -236,7 +236,7 @@ class StockOrderpointSuggest(models.TransientModel):
     uom_id = fields.Many2one(
         'uom.uom', string='UoM', related='product_id.uom_id',
         readonly=True)
-    seller_id = fields.Many2one(
+    supplier_id = fields.Many2one(
         'res.partner', string='Supplier', readonly=True)
     orderpoint_id = fields.Many2one(
         'stock.warehouse.orderpoint', string='Reordering Rule',

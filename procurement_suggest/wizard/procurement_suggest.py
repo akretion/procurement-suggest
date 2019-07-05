@@ -17,7 +17,7 @@ class ProcurementSuggestGenerate(models.TransientModel):
 
     categ_ids = fields.Many2many(
         'product.category', string='Product Categories')
-    seller_ids = fields.Many2many(
+    supplier_ids = fields.Many2many(
         'res.partner', string='Suppliers',
         domain=[('supplier', '=', True)])
     route_ids = fields.Many2many(
@@ -37,12 +37,13 @@ class ProcurementSuggestGenerate(models.TransientModel):
         else:
             # order to go up to qty_min
             procure_qty = qty_dict['min_qty'] - future_qty
+        seller = qty_dict['product']._select_seller(quantity=procure_qty)
 
         sline = {
             'company_id':
             qty_dict['orderpoint'] and qty_dict['orderpoint'].company_id.id,
             'product_id': product_id,
-            'seller_id': qty_dict['product'].seller_id.id or False,
+            'supplier_id': seller and seller.name.id or False,
             'qty_available': qty_dict['qty_available'],
             'incoming_qty': qty_dict['incoming_qty'],
             'outgoing_qty': qty_dict['outgoing_qty'],
@@ -61,9 +62,9 @@ class ProcurementSuggestGenerate(models.TransientModel):
         if self.categ_ids:
             product_domain.append(
                 ('categ_id', 'child_of', self.categ_ids.ids))
-        if self.seller_ids:
+        if self.supplier_ids:
             product_domain.append(
-                ('seller_id', 'in', self.seller_ids.ids))
+                ('seller_ids.name', 'in', self.supplier_ids.ids))
         if self.route_ids:
             product_domain.append(
                 ('route_ids', 'in', self.route_ids.ids))
@@ -79,7 +80,7 @@ class ProcurementSuggestGenerate(models.TransientModel):
             ('company_id', '=', self.env.user.company_id.id),
             ('location_id', 'child_of', self.location_id.id),
             ]
-        if self.categ_ids or self.seller_ids or self.route_ids:
+        if self.categ_ids or self.supplier_ids or self.route_ids:
 
             products_subset = ppo.search(self._prepare_product_domain())
             op_domain.append(('product_id', 'in', products_subset.ids))
@@ -90,7 +91,7 @@ class ProcurementSuggestGenerate(models.TransientModel):
             raise UserError(_(
                 "There are no suggest reordering rules corresponding "
                 "to the criterias."))
-        substract_dict = ops.subtract_procurements_from_orderpoints()
+        substract_dict = ops._quantity_in_progress()
         for op in ops:
             if op.product_id.id not in products:
                 products[op.product_id.id] = {
@@ -111,7 +112,6 @@ class ProcurementSuggestGenerate(models.TransientModel):
                         self.location_id.complete_name))
         return products, products_rec
 
-    @api.multi
     def run(self):
         self.ensure_one()
         pso = self.env['procurement.suggest']
@@ -124,9 +124,10 @@ class ProcurementSuggestGenerate(models.TransientModel):
         logger.info('Min qty computed on %d products', len(products))
         virtual_qties = products_rec.with_context(
             location=self.location_id.id)._compute_quantities_dict(
-                False, False, False)
+                None, None, None)
+
         logger.info('Stock levels qty computed on %d products', len(products))
-        for product_id, qty_dict in products.iteritems():
+        for product_id, qty_dict in products.items():
             qty_dict['virtual_available'] =\
                 virtual_qties[product_id]['virtual_available']
             qty_dict['incoming_qty'] =\
@@ -152,7 +153,7 @@ class ProcurementSuggestGenerate(models.TransientModel):
                         'Created a procurement suggestion for product ID %d',
                         product_id)
         p_suggest_lines_sorted = sorted(
-            p_suggest_lines, key=lambda to_sort: to_sort['seller_id'])
+            p_suggest_lines, key=lambda to_sort: to_sort['supplier_id'])
         if p_suggest_lines_sorted:
             p_suggest_ids = []
             for p_suggest_line in p_suggest_lines_sorted:
@@ -180,9 +181,8 @@ class ProcurementSuggest(models.TransientModel):
     product_id = fields.Many2one(
         'product.product', string='Product', required=True, readonly=True)
     uom_id = fields.Many2one(
-        'product.uom', string='UoM', related='product_id.uom_id',
-        readonly=True)
-    seller_id = fields.Many2one(
+        string='UoM', related='product_id.uom_id')
+    supplier_id = fields.Many2one(
         'res.partner', string='Supplier', readonly=True,
         domain=[('supplier', '=', True)])
     qty_available = fields.Float(
@@ -225,37 +225,37 @@ class ProcurementSuggest(models.TransientModel):
         help="Quantity to procure in the unit of measure of the product")
 
 
-class ProcurementCreateFromSuggest(models.TransientModel):
-    _name = 'procurement.create.from.suggest'
-    _description = 'Create procurement from suggests'
+class ProcurementRunFromSuggest(models.TransientModel):
+    _name = 'procurement.run.from.suggest'
+    _description = 'Run procurements from suggestions'
 
-    @api.multi
-    def create_proc(self):
+    count = fields.Integer(
+        string='Number of Procurements', readonly=True,
+        default=lambda self: self._default_count())
+
+    @api.model
+    def _default_count(self):
+        count = 0
+        if self._context.get('active_model') == 'procurement.suggest':
+            count = len(self._context.get('active_ids'))
+        return count
+
+    def run_procurements(self):
         self.ensure_one()
         assert self._context.get('active_model') == 'procurement.suggest'
         psuggest_ids = self._context.get('active_ids')
-        poo = self.env['procurement.order']
-        new_procs = poo
+        pgo = self.env['procurement.group']
         # TODO: add support for qty rounded
         # add support for date planned ?
         # add support for stock_calendar,
         # with _procurement_from_orderpoint_post_process ?
         for line in self.env['procurement.suggest'].browse(psuggest_ids):
+            op = line.orderpoint_id
             if float_compare(
                     line.procure_qty, 0,
-                    precision_rounding=line.uom_id.rounding) == 1:
-                vals = line.orderpoint_id._prepare_procurement_values(
+                    precision_rounding=line.uom_id.rounding) > 0:
+                vals = op._prepare_procurement_values(
                     line.procure_qty)
-                vals['origin'] += _(' Suggest')
-                vals['name'] += _(' Suggest')
-                # _procurement_from_orderpoint_post_process
-                new_procs += poo.create(vals)
-        if new_procs:
-            new_procs.run()
-        else:
-            raise UserError(_('All requested quantities are null.'))
-        action = self.env['ir.actions.act_window'].for_xml_id(
-            'procurement', 'procurement_action')
-        action['domain'] = [('id', 'in', new_procs.ids)]
-        action['view_mode'] = 'tree,form'
-        return action
+                pgo.run(
+                    line.product_id, line.procure_qty, op.product_uom,
+                    op.location_id, op.name, op.display_name, vals)
