@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 Akretion France (http://www.akretion.com/)
 # @author: Alexis de Lattre <alexis.delattre@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
@@ -235,7 +234,7 @@ class StockOrderpointSuggest(models.TransientModel):
     product_id = fields.Many2one(
         'product.product', string='Product', required=True, readonly=True)
     uom_id = fields.Many2one(
-        'product.uom', string='UoM', related='product_id.uom_id',
+        'uom.uom', string='UoM', related='product_id.uom_id',
         readonly=True)
     seller_id = fields.Many2one(
         'res.partner', string='Supplier', readonly=True)
