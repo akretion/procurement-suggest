@@ -20,7 +20,9 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
         'product.category', string='Product Categories')
     supplier_ids = fields.Many2many(
         'res.partner', string='Suppliers',
-        domain=[('supplier', '=', True)])
+        # ('parent_id', '=', False) in the domain of the 'name' field of
+        # product.supplierinfo is provided by product_usability...
+        domain=[('supplier', '=', True), ('parent_id', '=', False)])
     route_ids = fields.Many2many(
         'stock.location.route', string='Routes',
         domain=[('product_selectable', '=', True)])
@@ -139,6 +141,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
                 ('location_id', 'in', return_locations.ids),
                 ]
         suggest_from = self.suggest_from
+        unit_uom = self.env.ref('uom.product_uom_unit')
         for mxx in ['last_min', 'last_max', 'avg_min', 'avg_max']:
             start_date_dt = today_dt - relativedelta(
                 days=rotation_qty[mxx + '_days'])
@@ -160,6 +163,9 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
                 qty = qty / self.rotation_average_multiplier
             sline[mxx + '_rotation_qty'] = qty
             if mxx.startswith(suggest_from):
+                # Make it a config param and extend it to other UoMs ?
+                if product.uom_id == unit_uom:
+                    qty = round(qty, 0)
                 sline['new_' + mxx[-3:] + '_qty'] = qty
         return sline
 

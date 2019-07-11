@@ -19,7 +19,9 @@ class ProcurementSuggestGenerate(models.TransientModel):
         'product.category', string='Product Categories')
     supplier_ids = fields.Many2many(
         'res.partner', string='Suppliers',
-        domain=[('supplier', '=', True)])
+        # ('parent_id', '=', False) in the domain of the 'name' field of
+        # product.supplierinfo is provided by product_usability...
+        domain=[('supplier', '=', True), ('parent_id', '=', False)])
     route_ids = fields.Many2many(
         'stock.location.route', string='Routes',
         domain=[('product_selectable', '=', True)])
