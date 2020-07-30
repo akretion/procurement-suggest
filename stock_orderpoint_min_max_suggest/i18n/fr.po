@@ -1,0 +1,445 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* stock_orderpoint_min_max_suggest
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-08 08:12+0000\n"
+"PO-Revision-Date: 2020-07-08 08:12+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__security_days
+msgid "Additional Security Rotation Duration"
+msgstr "Délai de sécurité de rotation"
+
+#. module: stock_orderpoint_min_max_suggest
+#: selection:stock.orderpoint.suggest.generate,suggest_from:0
+msgid "Average Rotation"
+msgstr "Rotation moyenne"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__rotation_average_multiplier
+msgid "Average Rotation Duration Multiplier"
+msgstr "Multiplicateur de la durée de rotation moyenne"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__avg_max_rotation_qty
+msgid "Avg Max Rotation Qty"
+msgstr "Qté moyenne de la rotation maximale"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__avg_min_rotation_qty
+msgid "Avg Min Rotation Qty"
+msgstr "Quantité moyenne de la rotation minimale"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_tree
+msgid "Avg Rot. Max"
+msgstr "Rot. maxi moyenne"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_tree
+msgid "Avg Rot. Min"
+msgstr "Rot. mini moyenne"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_update_from_suggest_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_update_from_suggest_form
+msgid "Click on the Update button below to update the selected reordering rules."
+msgstr "Cliquer sur le bouton Mise à jour ci dessous pour mettre à jour les règle de réapprovisionnement sélectionnées."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__create_uid
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__create_uid
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_update_from_suggest__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__create_date
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__create_date
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_update_from_suggest__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__current_max_qty
+msgid "Current Max Qty"
+msgstr "Qté maxi actuelle"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__current_min_qty
+msgid "Current Min Qty"
+msgstr "Qté mini actuelle"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,help:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__uom_id
+msgid "Default unit of measure used for all stock operations."
+msgstr "Unité de mesure par défaut utilisée pour toutes les opérations de stock"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__display_name
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__display_name
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_update_from_suggest__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "Eventually, select the reordering rules that you would like to update and click on <i>Action</i> &gt; <i>Update Selected Reordering Rules</i>: Odoo will write the new min/max quantity on the selected reordering rules."
+msgstr "Sélectionner les règles de réapprovisionnement que vous voulez mettre à jour, cliquer sur <i>Action</i> &gt; <i>Mettre à jour les règles sélectionnées</i>: Odoo va écrire les nouvelles quantités min/max sur les règles de réapprovisionnement sélectionnées."
+
+#. module: stock_orderpoint_min_max_suggest
+#: code:addons/stock_orderpoint_min_max_suggest/wizard/stock_orderpoint_suggest.py:296
+#, python-format
+msgid "For the reordering rule '%s' of product '%s' the maximum quantity (%s) is bigger than the minimum quantity (%s)."
+msgstr "Pour la règle de réapprovisionnement '%s' de l'article '%s' la quantité maximum (%s) est supérieure à la quantité minimum (%s)."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "Generate"
+msgstr "Créer"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "Generate Reordering Rules Update Suggestions"
+msgstr "Créer les suggestions de mise à jour des règle de réapprovisionnement"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_search
+msgid "Group By"
+msgstr "Regrouper par"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__id
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__id
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_update_from_suggest__id
+msgid "ID"
+msgstr ""
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,help:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__min2max_ratio
+msgid "If you enter 20, the suggested max quantity will be the suggested min quantity + 20 %"
+msgstr "Si vous entrez 20, la quantité max suggérée sera la quantité min suggérée + 20 %"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "If you select <i>Reordering Rule and Supplierinfo</i> as <i>Rotation Duration Source</i>, Odoo will compute the <i>Minimum Rotation Duration</i> for each orderpoint using:"
+msgstr "Si vous sélectionner <i>Règle de réapprovisionnement et fournisseurs</i> en tant que <i>Source de délai de rotation</i>, Odoo va calculer la <i>Durée de rotation minimum</i> pour chaque règle selon:"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "If you select <i>Wizard</i> as <i>Rotation Duration Source</i>, you will have to enter below a global <i>Minimum</i> and <i>Maximum Rotation Duration</i>. When you validate this step, Odoo will sum the quantity of the  stock moves in <i>Done</i> state that go from the selected <i>Stock Location</i> to any other stock location (minus the stock moves in <i>Done</i> state that go from any <i>Customer Location</i> to the selected <i>Stock Location</i>) from yesterday to yesterday minus the <i>Minimum Rotation Duration</i>. If you set <i>Suggest From</i> to <i>Last Rotation</i>, that quantity will be used as the new suggested minimum quantity. If you set the <i>Average Rotation Duration Multiplier</i> to 3, Odoo will sum the quantity of the stock moves from yesterday to the triple of the <i>Minimum Rotation Duration</i> and divide the result by 3. If you set <i>Suggest From</i> to <i>Average Rotation</i>, that quantity will be used as the new suggested minimum quantity."
+msgstr "Si vous sélectionnez <i>Wizard</i> en tant que <i>Source de la durée de rotation</i>, vous devrez entrer ci-dessous une <i>Durée de rotation Minimum</i> et <i>Maximum</i>. Une fois cette étape validée, Odoo va ajouter la quantité des mouvements de stock <i>Terminé</i> allant de <i>l'emplacement</i> sélectionné vers n'importe quel autre emplacement (moins les mouvements de stock <i>Terminés</i> allant de <i>l'emplacement client</i> vers <i>l'emplacement</i> sélectionné) d'hier à hier moins la <i>Durée de rotation minimum</i>. Si renseignez le champ <i>Suggéré par</i> avec <i>Dernière rotation</i>, cette quantité sera utilisée comme nouvelle quantité suggérée. Si vous renseignez le champ <i>Multiplicateur de la durée de rotation moyenne</i> à 3, Odoo ajoutera la quantité des mouvements de stock d'hier au triple de la <i>Durée de rotation minimum</i> et divisera le résultat par 3. Si vous renseignez le champ <i>Suggérer par</i> avec <i>Rotation moyenne</i>, cette quantité sera utilisée en tant que nouvelle quantité suggérée minimum."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__last_max_rotation_qty
+msgid "Last Max Rotation Qty"
+msgstr ""
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__last_min_rotation_qty
+msgid "Last Min Rotation Qty"
+msgstr ""
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest____last_update
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate____last_update
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_update_from_suggest____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_tree
+msgid "Last Rot. Max"
+msgstr "Dernière Rot. maxi"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_tree
+msgid "Last Rot. Min"
+msgstr "Dernière Rot. mini"
+
+#. module: stock_orderpoint_min_max_suggest
+#: selection:stock.orderpoint.suggest.generate,suggest_from:0
+msgid "Last Rotation"
+msgstr "Dernière rotation"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__write_uid
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__write_uid
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_update_from_suggest__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__write_date
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__write_date
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_update_from_suggest__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__location_id
+msgid "Location"
+msgstr "Emplacement"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__max_days
+msgid "Max Days"
+msgstr "Jours maxi"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__max_days
+msgid "Max Rotation Duration"
+msgstr "Durée de rotation maxi"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__min_days
+msgid "Min Days"
+msgstr "Jours mini"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__min_days
+msgid "Min Rotation Duration"
+msgstr "Durée de rotation mini"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__min2max_ratio
+msgid "Min to Max Rotation Duration Ratio"
+msgstr "Ratio durée de rotation Mini à maxi"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__new_max_qty
+msgid "New Max Qty"
+msgstr "Nouvelle qté maxi"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__new_min_qty
+msgid "New Min Qty"
+msgstr "Nouvelle qté mini"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,help:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__new_max_qty
+msgid "New maximum quantity in the unit of measure of the product"
+msgstr "Nouvelle quantité maxi dans l'unité de mesure du produit"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,help:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__new_min_qty
+msgid "New minimum quantity in the unit of measure of the product"
+msgstr "Nouvelle quantité mini dans l'unité de mesure du produit"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "Odoo will search all existing reordering rules linked to the selected <i>Stock Location</i>, limited to the selected <i>Product Categories</i>, <i>Routes</i> and <i>Suppliers</i> (if some were selected)."
+msgstr "Odoo va rechercher toutes les règles de réapprovisionnement existantes liées à <i>l'emplacement</i> sélectionné, limité aux <i>Catégories de produits</i>, <i>Routes</i> et <i>Fournisseurs</i> sélectionnés."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "On the next step, Odoo will display, for each reordering rule, the current min/max quantity, the min/max rotation duration, the computed min/max rotation quantity (last and average) and the suggested new min/max quantity. You can manually modify the <i>New Min Qty</i> and the <i>New Max Qty</i>."
+msgstr "A la prochaine étape, Odoo affichera, pour chaque règle de réapprovisionnement, la quantité mini/maxi actuelle, la durée de rotation mini/maxi, la quantité de rotation mini/maxi calculée et la nouvelle quantité mini/maxi suggérée. Vous pouvez modifier manuellement la <i>Nouvelle Qté mini</i> et la <i>Nouvelle Qté maxi</i>."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model,name:stock_orderpoint_min_max_suggest.model_stock_orderpoint_suggest
+msgid "Orderpoint Suggestions"
+msgstr "Suggestion de réapprovisionnement"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__product_id
+msgid "Product"
+msgstr "Article"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__categ_ids
+msgid "Product Categories"
+msgstr "Catégories d'articles"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__orderpoint_id
+msgid "Reordering Rule"
+msgstr "Règle de réapprovisionnement"
+
+#. module: stock_orderpoint_min_max_suggest
+#: selection:stock.orderpoint.suggest.generate,rotation_duration_source:0
+msgid "Reordering Rule and Supplierinfo"
+msgstr "Règle de réapprovisionnement et Fournisseur"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.actions.act_window,name:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_action
+#: model:ir.actions.act_window,name:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_action
+#: model:ir.ui.menu,name:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_menu
+msgid "Reordering Rules Suggestions"
+msgstr "Suggestion de règle de réapprovisionnement"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_tree
+msgid "Reordering Rules Update Suggestions"
+msgstr "Suggestion de mise à jour des règles de réapprovisionnement"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__rotation_duration_source
+msgid "Rotation Duration Source"
+msgstr "Source de la durée de rotation"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__route_ids
+msgid "Routes"
+msgstr "Routes"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_tree
+msgid "Rule"
+msgstr "Règle"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model,name:stock_orderpoint_min_max_suggest.model_stock_orderpoint_suggest_generate
+msgid "Start to generate the orderpoint suggestions"
+msgstr ""
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__location_id
+msgid "Stock Location"
+msgstr "Emplacement"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__suggest_from
+msgid "Suggest From"
+msgstr "Suggérer par"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__supplier_id
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_search
+msgid "Supplier"
+msgstr "Fournisseur"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest_generate__supplier_ids
+msgid "Suppliers"
+msgstr "Fournisseurs"
+
+#. module: stock_orderpoint_min_max_suggest
+#: code:addons/stock_orderpoint_min_max_suggest/wizard/stock_orderpoint_suggest.py:89
+#, python-format
+msgid "The min days (%d) cannot be higher than max days (%d)."
+msgstr ""
+
+#. module: stock_orderpoint_min_max_suggest
+#: sql_constraint:stock.orderpoint.suggest.generate:0
+msgid "The value of the field 'Additional Security Rotation Duration' must be positive"
+msgstr ""
+
+#. module: stock_orderpoint_min_max_suggest
+#: sql_constraint:stock.orderpoint.suggest.generate:0
+msgid "The value of the field 'Average Rotation Delay Multiplier' must be strictly positive"
+msgstr "La valeur du champ 'Multiplicateur de la durée de rotation moyenne' doit être positive"
+
+#. module: stock_orderpoint_min_max_suggest
+#: sql_constraint:stock.orderpoint.suggest.generate:0
+msgid "The value of the field 'Max Rotation Duration' must be positive"
+msgstr "La valeur du champ 'Durée de rotation maxi' doit être positive"
+
+#. module: stock_orderpoint_min_max_suggest
+#: sql_constraint:stock.orderpoint.suggest.generate:0
+msgid "The value of the field 'Min Rotation Duration' must be positive"
+msgstr "La valeur du champ 'Durée de rotation mini' doit être positive"
+
+#. module: stock_orderpoint_min_max_suggest
+#: sql_constraint:stock.orderpoint.suggest.generate:0
+msgid "The value of the field 'Min to Max Ratio' must be positive"
+msgstr "La valeur du champ 'Ratio mini à maxi' doit être positive"
+
+#. module: stock_orderpoint_min_max_suggest
+#: code:addons/stock_orderpoint_min_max_suggest/wizard/stock_orderpoint_suggest.py:197
+#, python-format
+msgid "There are no products matching the filters."
+msgstr "Il n'existe pas de produits correspondant aux filtres."
+
+#. module: stock_orderpoint_min_max_suggest
+#: code:addons/stock_orderpoint_min_max_suggest/wizard/stock_orderpoint_suggest.py:206
+#, python-format
+msgid "There are no reordering rules on the stock location '%s' matching the product filters."
+msgstr "Il n'existe pas de règle de réapprovisionnement pour l'emplacement '%s' correspondant les filtres produit."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "This wizard will suggest new min/max quantities on <b>existing</b> reordering rules."
+msgstr "Cet assistant va suggérer les nouvelles quantités mini/maxi sur les règles de réapprovisionnement <b>existantes</b>."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "To compute the <i>Maximum Rotation Duration</i> for each orderpoint, Odoo will multiply the computed <i>Minimum Rotation Duration</i> by the <i>Min to Max Rotation Duration Ratio</i> that you have set below."
+msgstr "Pour calculer la <i>Durée de rotation maximum</i> pour chaque règle, Odoo va multiplier la <i>Durée de rotation minimum</i> calculée par le <i>Ratio durée de rotation mini à maxi</i> que vous avez choisis dessous."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,field_description:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__uom_id
+msgid "UoM"
+msgstr "Udm"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_update_from_suggest_form
+msgid "Update"
+msgstr "Mise à jour"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_update_from_suggest_form
+msgid "Update Reordering Rules"
+msgstr "Mise à jour des règles de réapprovisionnement"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.actions.act_window,name:stock_orderpoint_min_max_suggest.stock_orderpoint_update_from_suggest_action
+msgid "Update Selected Orderpoints"
+msgstr "Mise à jour des règles sélectionnées"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model,name:stock_orderpoint_min_max_suggest.model_stock_orderpoint_update_from_suggest
+msgid "Update orderpoints from suggestions"
+msgstr "Mise à jour des règles à partir des suggestions"
+
+#. module: stock_orderpoint_min_max_suggest
+#: selection:stock.orderpoint.suggest.generate,rotation_duration_source:0
+msgid "Wizard"
+msgstr ""
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "days"
+msgstr "jours"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "if the lead time of the related orderpoint is set to <i>Day(s) to purchase</i> (and not <i>Day(s) to get the products</i>), it will add the <i>Delivery Lead Time</i> of the supplierinfo (using the first supplierinfo which is currently valid),"
+msgstr "si le délai de la régle est <i>Jour(s) pour acheter</i> (et non pas <i>Jour(s) pour recevoir les produits</i>), cela va ajouter <i>le délai de livraison</i> du fournisseur (en utilisant le premier fournisseur valide),"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model:ir.model.fields,help:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__current_max_qty
+#: model:ir.model.fields,help:stock_orderpoint_min_max_suggest.field_stock_orderpoint_suggest__current_min_qty
+msgid "in the unit of measure for the product"
+msgstr "dans l'unité de mesure du produit"
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "it will add the <i>Additional Security Rotation Duration</i> defined below."
+msgstr "cela va ajouter <i>Délai de sécurité de rotation</i> défini dessous."
+
+#. module: stock_orderpoint_min_max_suggest
+#: model_terms:ir.ui.view,arch_db:stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_generate_form
+msgid "the <i>Lead Time</i> of the related orderpoint,"
+msgstr "le <i>Délai</i> de la règle associée,"
+
