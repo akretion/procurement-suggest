@@ -1,9 +1,8 @@
-# Copyright 2019 Akretion France (http://www.akretion.com/)
+# Copyright 2019-2021 Akretion France (http://www.akretion.com/)
 # @author: Alexis de Lattre <alexis.delattre@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models, _
-import odoo.addons.decimal_precision as dp
 from odoo.tools import float_compare
 from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
@@ -16,19 +15,20 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
     _name = 'stock.orderpoint.suggest.generate'
     _description = 'Start to generate the orderpoint suggestions'
 
+    company_id = fields.Many2one(
+        'res.company', string='Company', required=True)
     categ_ids = fields.Many2many(
         'product.category', string='Product Categories')
     supplier_ids = fields.Many2many(
         'res.partner', string='Suppliers',
         # ('parent_id', '=', False) in the domain of the 'name' field of
         # product.supplierinfo is provided by product_usability...
-        domain=[('supplier', '=', True), ('parent_id', '=', False)])
+        domain=[('parent_id', '=', False)])
     route_ids = fields.Many2many(
         'stock.location.route', string='Routes',
         domain=[('product_selectable', '=', True)])
     location_id = fields.Many2one(
-        'stock.location', string='Stock Location', required=True,
-        default=lambda self: self.env.ref('stock.stock_location_stock'))
+        'stock.location', string='Stock Location', required=True)
     rotation_duration_source = fields.Selection([
         ('wizard', 'Wizard'),
         ('orderpoint_supplierinfo', 'Reordering Rule and Supplierinfo'),
@@ -77,6 +77,16 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
             "must be strictly positive"),
         ]
 
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        res['company_id'] = self.env.company.id
+        wh = self.env['stock.warehouse'].search(
+            [('company_id', '=', res['company_id'])], limit=1)
+        if wh:
+            res['location_id'] = wh.lot_stock_id.id
+        return res
+
     @api.onchange('min_days')
     def min_max_days_change(self):
         if self.min_days and not self.max_days:
@@ -93,21 +103,20 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
     def _prepare_suggest_line(self, orderpoint, return_locations):
         product = orderpoint.product_id
         seller = product._select_seller(quantity=100000)
-        company = orderpoint.company_id
+        company_id = self.company_id.id
         smo = self.env['stock.move']
         if self.rotation_duration_source == 'wizard':
             min_days = self.min_days
             max_days = self.max_days
         elif self.rotation_duration_source == 'orderpoint_supplierinfo':
-            min_days = orderpoint.lead_days + self.security_days
-            if orderpoint.lead_type == 'supplier':
-                min_days += seller.delay or 0.0
+            lead_days_res = orderpoint.rule_ids._get_lead_days(orderpoint.product_id)
+            min_days = lead_days_res[0] + self.security_days
             max_days = round(min_days * (1 + self.min2max_ratio / 100.0))
         else:
             raise
 
         sline = {
-            'company_id': company.id,
+            'company_id': company_id,
             'orderpoint_id': orderpoint.id,
             'product_id': product.id,
             'supplier_id': seller and seller.name.id or False,
@@ -116,8 +125,8 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
             }
 
         # compute rotation
-        today = fields.Date.context_today(self)
-        today_dt = fields.Date.from_string(today)
+        today_dt = fields.Date.context_today(self)
+        today = fields.Date.to_string(today_dt)
         rotation_qty = {
             'last_min_days': min_days,
             'last_max_days': max_days,
@@ -128,7 +137,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
             ('product_id', '=', product.id),
             ('date', '<=', '%s 00:00:00' % today),  # ends yesterday evening
             ('state', '=', 'done'),
-            ('company_id', '=', company.id),
+            ('company_id', '=', company_id),
             ]
         regular_loc_domain = [
             ('location_id', '=', self.location_id.id),
@@ -185,7 +194,9 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
     def get_return_locations(self):
         '''Designed to be inherited'''
         return_locs = self.env['stock.location'].search([
-            ('usage', '=', 'customer')])
+            ('usage', '=', 'customer'),
+            '|', ('company_id', '=', False), ('company_id', '=', self.company_id.id),
+            ])
         return return_locs
 
     def run(self):
@@ -199,6 +210,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
         orderpoints = self.env['stock.warehouse.orderpoint'].search([
             ('product_id', 'in', products.ids),
             ('location_id', '=', self.location_id.id),
+            ('company_id', '=', self.company_id.id),
             ])
         logger.info(
             '%d orderpoints selected for suggestions', len(orderpoints))
@@ -220,9 +232,8 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
         for o_suggest_line in o_suggest_lines_sorted:
             o_suggest = soso.create(o_suggest_line)
             o_suggest_ids.append(o_suggest.id)
-        action = self.env['ir.actions.act_window'].for_xml_id(
-            'stock_orderpoint_min_max_suggest',
-            'stock_orderpoint_suggest_action')
+        action = self.env['ir.actions.actions']._for_xml_id(
+            'stock_orderpoint_min_max_suggest.stock_orderpoint_suggest_action')
         action.update({
             'target': 'current',
             'domain': [('id', 'in', o_suggest_ids)],
@@ -250,15 +261,18 @@ class StockOrderpointSuggest(models.TransientModel):
     location_id = fields.Many2one(
         related='orderpoint_id.location_id',
         string='Location', readonly=True)
+    trigger = fields.Selection(
+        related='orderpoint_id.trigger',
+        readonly=True)
     current_min_qty = fields.Float(
         related='orderpoint_id.product_min_qty',
         string='Current Min Qty', readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="in the unit of measure for the product")
     current_max_qty = fields.Float(
         related='orderpoint_id.product_max_qty',
         string="Current Max Qty", readonly=True,
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="in the unit of measure for the product")
     min_days = fields.Integer(string='Min Days', readonly=True)
     max_days = fields.Integer(string='Max Days', readonly=True)
@@ -268,11 +282,11 @@ class StockOrderpointSuggest(models.TransientModel):
     avg_max_rotation_qty = fields.Float(readonly=True)
     new_min_qty = fields.Float(
         string='New Min Qty',
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="New minimum quantity in the unit of measure of the product")
     new_max_qty = fields.Float(
         string='New Max Qty',
-        digits=dp.get_precision('Product Unit of Measure'),
+        digits='Product Unit of Measure',
         help="New maximum quantity in the unit of measure of the product")
 
 
@@ -310,8 +324,8 @@ class StockOrderpointUpdateFromSuggest(models.TransientModel):
             if vals:
                 op.write(vals)
                 updated_orderpoints += op
-        action = self.env['ir.actions.act_window'].for_xml_id(
-            'stock', 'action_orderpoint_form')
+        action = self.env['ir.actions.actions']._for_xml_id(
+            'stock.action_orderpoint')
         action['domain'] = [('id', 'in', updated_orderpoints.ids)]
         action['view_mode'] = 'tree,form'
         return action

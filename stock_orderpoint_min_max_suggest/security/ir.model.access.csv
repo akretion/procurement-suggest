@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_orderpoint_suggest_generate,Full access on stock.orderpoint.suggest.generate wizard,model_stock_orderpoint_suggest_generate,stock.group_stock_manager,1,1,1,1
+access_stock_orderpoint_suggest,Full access on stock.orderpoint.suggest wizard,model_stock_orderpoint_suggest,stock.group_stock_manager,1,1,1,1
+access_stock_orderpoint_update_from_suggest,Full access on stock.orderpoint.update.from.suggest wizard,model_stock_orderpoint_update_from_suggest,stock.group_stock_manager,1,1,1,1

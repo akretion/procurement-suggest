@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2019 Akretion France (http://www.akretion.com/)
+  Copyright 2019-2021 Akretion France (http://www.akretion.com/)
   @author: Alexis de Lattre <alexis.delattre@akretion.com>
   License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 -->
@@ -20,16 +20,16 @@
             <div attrs="{'invisible': [('rotation_duration_source', '!=', 'orderpoint_supplierinfo')]}"><p>If you select <i>Reordering Rule and Supplierinfo</i> as <i>Rotation Duration Source</i>, Odoo will compute the <i>Minimum Rotation Duration</i> for each orderpoint using:</p>
                 <ul>
                     <li>the <i>Lead Time</i> of the related orderpoint,</li>
-                    <li>if the lead time of the related orderpoint is set to <i>Day(s) to purchase</i> (and not <i>Day(s) to get the products</i>), it will add the <i>Delivery Lead Time</i> of the supplierinfo (using the first supplierinfo which is currently valid),</li>
                     <li>it will add the <i>Additional Security Rotation Duration</i> defined below.</li></ul>
                 <p>To compute the <i>Maximum Rotation Duration</i> for each orderpoint, Odoo will multiply the computed <i>Minimum Rotation Duration</i> by the <i>Min to Max Rotation Duration Ratio</i> that you have set below.
         </p></div>
 
             <p>On the next step, Odoo will display, for each reordering rule, the current min/max quantity, the min/max rotation duration, the computed min/max rotation quantity (last and average) and the suggested new min/max quantity. You can manually modify the <i>New Min Qty</i> and the <i>New Max Qty</i>.</p>
 
-            <p>Eventually, select the reordering rules that you would like to update and click on <i>Action</i> > <i>Update Selected Reordering Rules</i>: Odoo will write the new min/max quantity on the selected reordering rules.</p>
+            <p>Eventually, select the reordering rules that you would like to update and click on <b>Update Reordering Rules</b>: Odoo will write the new min/max quantity on the selected reordering rules.</p>
 
             <group name="name">
+                <field name="company_id" groups="base.group_multi_company"/>
                 <field name="categ_ids" widget="many2many_tags"/>
                 <field name="route_ids" widget="many2many_tags"/>
                 <field name="supplier_ids" widget="many2many_tags"/>
@@ -74,24 +74,40 @@
     parent="stock.menu_stock_warehouse_mgmt"
     sequence="20"/>
 
+<record id="stock_orderpoint_update_from_suggest_action" model="ir.actions.act_window">
+    <field name="name">Update Reordering Rules</field>
+    <field name="res_model">stock.orderpoint.update.from.suggest</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+</record>
+
+
 <record id="stock_orderpoint_suggest_tree" model="ir.ui.view">
     <field name="name">stock.orderpoint.suggest.tree</field>
     <field name="model">stock.orderpoint.suggest</field>
     <field name="arch" type="xml">
         <tree string="Reordering Rules Update Suggestions" editable="bottom">
-            <field name="orderpoint_id" string="Rule"/>
+            <header>
+                <button
+                        name="%(stock_orderpoint_update_from_suggest_action)d"
+                        type="action"
+                        string="Update Reordering Rules"
+                    />
+            </header>
+            <field name="orderpoint_id" string="Rule" optional="show"/>
+            <field name="trigger" optional="hide"/>
             <field name="product_id"/>
-            <field name="supplier_id"/>
-            <field name="location_id"/>
+            <field name="supplier_id" optional="show"/>
+            <field name="location_id" optional="show"/>
             <field name="current_min_qty"/>
             <field name="current_max_qty"/>
-            <field name="uom_id" groups="uom.group_uom"/>
-            <field name="min_days"/>
-            <field name="max_days"/>
-            <field name="last_min_rotation_qty" string="Last Rot. Min"/>
-            <field name="last_max_rotation_qty" string="Last Rot. Max"/>
-            <field name="avg_min_rotation_qty" string="Avg Rot. Min"/>
-            <field name="avg_max_rotation_qty" string="Avg Rot. Max"/>
+            <field name="uom_id" groups="uom.group_uom" optional="show"/>
+            <field name="min_days" optional="show"/>
+            <field name="max_days" optional="show"/>
+            <field name="last_min_rotation_qty" string="Last Rot. Min" optional="show"/>
+            <field name="last_max_rotation_qty" string="Last Rot. Max" optional="show"/>
+            <field name="avg_min_rotation_qty" string="Avg Rot. Min" optional="show"/>
+            <field name="avg_max_rotation_qty" string="Avg Rot. Max" optional="show"/>
             <field name="new_min_qty"/>
             <field name="new_max_qty"/>
         </tree>
@@ -138,13 +154,5 @@
     </field>
 </record>
 
-<act_window id="stock_orderpoint_update_from_suggest_action"
-            multi="True"
-            key2="client_action_multi"
-            name="Update Selected Orderpoints"
-            res_model="stock.orderpoint.update.from.suggest"
-            src_model="stock.orderpoint.suggest"
-            view_mode="form"
-            target="new" />
 
 </odoo>
