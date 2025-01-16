@@ -1,10 +1,10 @@
-# Copyright 2019-2021 Akretion France (http://www.akretion.com/)
+# Copyright 2019-2025 Akretion France (https://www.akretion.com/)
 # @author: Alexis de Lattre <alexis.delattre@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
     'name': 'Reordering Rules Min/Max Suggest',
-    'version': '14.0.1.0.0',
+    'version': '16.0.1.0.0',
     'category': 'Procurement',
     'license': 'AGPL-3',
     'summary': 'Suggest new min/max qty for orderpoints',
@@ -19,7 +19,7 @@ You may want to increase the **transient_age_limit** (default value = 1h) in you
 This module has been written by Alexis de Lattre from Akretion France <alexis.delattre@akretion.com>.
     """,
     'author': 'Akretion',
-    'website': 'http://www.akretion.com',
+    'website': 'https://github.com/akretion/procurement-suggest',
     'depends': ['stock'],
     'data': [
         'wizard/stock_orderpoint_suggest_view.xml',

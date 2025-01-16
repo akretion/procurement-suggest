@@ -1,4 +1,4 @@
-# Copyright 2019-2021 Akretion France (http://www.akretion.com/)
+# Copyright 2019-2025 Akretion France (https://www.akretion.com/)
 # @author: Alexis de Lattre <alexis.delattre@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -25,7 +25,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
         # product.supplierinfo is provided by product_usability...
         domain=[('parent_id', '=', False)])
     route_ids = fields.Many2many(
-        'stock.location.route', string='Routes',
+        'stock.route', string='Routes',
         domain=[('product_selectable', '=', True)])
     location_id = fields.Many2one(
         'stock.location', string='Stock Location', required=True)
@@ -119,7 +119,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
             'company_id': company_id,
             'orderpoint_id': orderpoint.id,
             'product_id': product.id,
-            'supplier_id': seller and seller.name.id or False,
+            'supplier_id': seller and seller.partner_id.id or False,
             'min_days': min_days,
             'max_days': max_days,
             }
@@ -159,14 +159,14 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
                 'date', '>=', '%s 00:00:00' % start_date)]
             qty_rg = smo.read_group(
                 move_domain + regular_loc_domain + start_date_domain,
-                ['product_uom_qty'], [])
-            qty = qty_rg[0]['product_uom_qty'] or 0.0
+                ['product_qty:sum'], [])
+            qty = qty_rg and qty_rg[0]['product_qty'] or 0.0
             if return_locations:
                 return_qty_rg = smo.read_group(
                     move_domain + return_loc_domain + start_date_domain,
-                    ['product_uom_qty'], [])
+                    ['product_qty:sum'], [])
                 return_qty = return_qty_rg and\
-                    return_qty_rg[0]['product_uom_qty'] or 0.0
+                    return_qty_rg[0]['product_qty'] or 0.0
                 qty -= return_qty
             if mxx.startswith('avg') and self.rotation_average_multiplier:
                 qty = qty / self.rotation_average_multiplier
@@ -185,13 +185,13 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
                 ('categ_id', 'child_of', self.categ_ids.ids))
         if self.supplier_ids:
             product_domain.append(
-                ('seller_ids.name', 'in', self.supplier_ids.ids))
+                ('seller_ids.partner_id', 'in', self.supplier_ids.ids))
         if self.route_ids:
             product_domain.append(
                 ('route_ids', 'in', self.route_ids.ids))
         return product_domain
 
-    def get_return_locations(self):
+    def _get_return_locations(self):
         '''Designed to be inherited'''
         return_locs = self.env['stock.location'].search([
             ('usage', '=', 'customer'),
@@ -220,7 +220,7 @@ class StockOrderpointSuggestGenerate(models.TransientModel):
                 "matching the product filters.")
                 % self.location_id.display_name)
 
-        return_locs = self.get_return_locations()
+        return_locs = self._get_return_locations()
         o_suggest_lines = []
         for orderpoint in orderpoints:
             vals = self._prepare_suggest_line(orderpoint, return_locs)
@@ -251,28 +251,21 @@ class StockOrderpointSuggest(models.TransientModel):
     product_id = fields.Many2one(
         'product.product', string='Product', required=True, readonly=True)
     uom_id = fields.Many2one(
-        'uom.uom', string='UoM', related='product_id.uom_id',
-        readonly=True)
+        'uom.uom', string='UoM', related='product_id.uom_id')
     supplier_id = fields.Many2one(
         'res.partner', string='Supplier', readonly=True)
     orderpoint_id = fields.Many2one(
         'stock.warehouse.orderpoint', string='Reordering Rule',
         readonly=True)
-    location_id = fields.Many2one(
-        related='orderpoint_id.location_id',
-        string='Location', readonly=True)
-    trigger = fields.Selection(
-        related='orderpoint_id.trigger',
-        readonly=True)
+    location_id = fields.Many2one(related='orderpoint_id.location_id')
+    trigger = fields.Selection(related='orderpoint_id.trigger')
     current_min_qty = fields.Float(
         related='orderpoint_id.product_min_qty',
-        string='Current Min Qty', readonly=True,
-        digits='Product Unit of Measure',
+        string='Current Min Qty', digits='Product Unit of Measure',
         help="in the unit of measure for the product")
     current_max_qty = fields.Float(
         related='orderpoint_id.product_max_qty',
-        string="Current Max Qty", readonly=True,
-        digits='Product Unit of Measure',
+        string="Current Max Qty", digits='Product Unit of Measure',
         help="in the unit of measure for the product")
     min_days = fields.Integer(string='Min Days', readonly=True)
     max_days = fields.Integer(string='Max Days', readonly=True)
